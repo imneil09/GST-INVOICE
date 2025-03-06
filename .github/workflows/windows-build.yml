@@ -16,8 +16,8 @@ jobs:
       - name: Setup Flutter (3.29.0)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.0'  # Ensures Dart 3.7.0+
-          cache: false  # Avoid using cached older versions
+          flutter-version: '3.29.0'
+          cache: false
 
       - name: Enable Windows Support
         run: |
@@ -25,10 +25,11 @@ jobs:
           flutter doctor
 
       - name: Ensure Windows Project Exists
+        shell: pwsh
         run: |
-          if [ ! -d "windows" ]; then
+          if (-Not (Test-Path "windows")) {
             flutter create .
-          fi
+          }
 
       - name: Install Dependencies
         run: flutter pub get
