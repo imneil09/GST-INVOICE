@@ -3,7 +3,7 @@ name: Build Windows App
 on:
   push:
     branches:
-      - main  # Change if using another branch
+      - main  # Change this if using another branch
 
 jobs:
   build:
@@ -13,14 +13,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Setup Flutter (Latest Stable)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.9'  # Use latest stable Flutter version
+          flutter-version: '3.19.3'  # Use latest stable Flutter version (includes Dart 3.7+)
+          cache: false  # Avoid using cached older versions
 
-      - name: Install Latest Dart SDK (3.7.0 or higher)
+      - name: Verify Flutter & Dart Version
         run: |
-          flutter upgrade
+          flutter --version
+          dart --version
           flutter doctor
 
       - name: Enable Windows Support
