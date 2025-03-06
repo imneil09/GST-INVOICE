@@ -19,14 +19,13 @@ jobs:
           flutter-version: '3.29.0'  # Ensures Dart 3.7.0+
           cache: false  # Avoid using cached older versions
 
-      - name: Verify Flutter & Dart Version
+      - name: Enable Windows Support
         run: |
-          flutter --version
-          dart --version
+          flutter config --enable-windows-desktop
           flutter doctor
 
-      - name: Enable Windows Support
-        run: flutter config --enable-windows-desktop
+      - name: Create Missing Windows Project Files (If Needed)
+        run: flutter create .
 
       - name: Install Dependencies
         run: flutter pub get
