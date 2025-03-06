@@ -24,8 +24,11 @@ jobs:
           flutter config --enable-windows-desktop
           flutter doctor
 
-      - name: Create Missing Windows Project Files (If Needed)
-        run: flutter create .
+      - name: Ensure Windows Project Exists
+        run: |
+          if [ ! -d "windows" ]; then
+            flutter create .
+          fi
 
       - name: Install Dependencies
         run: flutter pub get
