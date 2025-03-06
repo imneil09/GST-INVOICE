@@ -567,7 +567,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
             children: [
               Obx(
                 () => Text(
-                  'Total Amount: ₹ ${controller.totalAmount.value.toStringAsFixed(2)}',
+                  'Total Amount: ₹ ${controller.allTaxAmount.value.toStringAsFixed(2)}',
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                 ),
               ),

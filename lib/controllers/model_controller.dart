@@ -21,11 +21,11 @@ class InvoiceController extends GetxController {
   final products = <Product>[].obs;
 
   // ✅ Totals (Auto-Updated)
-  final totalSubTotal = 0.0.obs;
+  final allSubTotal = 0.0.obs;
   final totalCGST = 0.0.obs;
   final totalSGST = 0.0.obs;
   final totalIGST = 0.0.obs;
-  final totalAmount = 0.0.obs;
+  final allTaxAmount = 0.0.obs;
 
   /// ✅ Set Customer Details
   void setCustomerDetails({
@@ -69,12 +69,12 @@ class InvoiceController extends GetxController {
 
   /// ✅ Calculate Totals
   void _calculateTotals() {
-    totalSubTotal.value = products.fold(0.0, (sum, p) => sum + p.subTotal);
+    allSubTotal.value = products.fold(0.0, (sum, p) => sum + p.subTotal);
     totalCGST.value = products.fold(0.0, (sum, p) => sum + p.cgstAmount);
     totalSGST.value = products.fold(0.0, (sum, p) => sum + p.sgstAmount);
     totalIGST.value = products.fold(0.0, (sum, p) => sum + p.igstAmount);
-    totalAmount.value =
-        totalSubTotal.value +
+    allTaxAmount.value =
+        allSubTotal.value +
         totalCGST.value +
         totalSGST.value +
         totalIGST.value;
@@ -84,7 +84,7 @@ class InvoiceController extends GetxController {
 
   /// ✅ Convert Amount to Words
   String getAmountInWords() {
-    return InvoiceModel.convertNumberToWords(totalAmount.value);
+    return InvoiceModel.convertNumberToWords(allTaxAmount.value);
   }
 
   /// ✅ Generate Invoice Object

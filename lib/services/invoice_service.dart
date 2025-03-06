@@ -25,11 +25,11 @@ class InvoiceService {
     final outwardSupplies = data['outwardSupplies'];
     final customerGstin = data['customerGstin'];
     final products = List<Map<String, dynamic>>.from(data['products']);
-    final totalSubTotal = data['totalSubTotal'];
+    final allSubTotal = data['allSubTotal'];
     final totalCGST = data['totalCGST'];
     final totalSGST = data['totalSGST'];
     final totalIGST = data['totalIGST'];
-    final totalAmount = data['totalAmount'];
+    final allTaxAmount = data['allTaxAmount'];
     final bankAccountHolder = data['bankAccountHolder'];
     final bankAccountNumber = data['bankAccountNumber'];
     final bankBranchIfsc = data['bankBranchIfsc'];
@@ -46,11 +46,11 @@ class InvoiceService {
 
     /// ✅ Convert Amount to Words
     String getAmountInWords() {
-      return InvoiceModel.convertNumberToWords(totalAmount);
+      return InvoiceModel.convertNumberToWords(allTaxAmount);
     }
 
     // Helper function for table rows
-    pw.TableRow _row(String header, double? value, {bool isBold = false}) {
+    pw.TableRow row(String header, double? value, {bool isBold = false}) {
       return pw.TableRow(
         children: [
           pw.Padding(
@@ -75,7 +75,7 @@ class InvoiceService {
     }
 
     // Helper function for table rows
-    pw.TableRow _rowb(String header, String value) {
+    pw.TableRow tableRow(String header, String value) {
       return pw.TableRow(
         children: [
           pw.Padding(
@@ -93,7 +93,7 @@ class InvoiceService {
       );
     }
 
-    pw.Widget _tableHeaderCell(String text) {
+    pw.Widget tableHeaderCell(String text) {
       return pw.Container(
         padding: pw.EdgeInsets.all(4),
         child: pw.Text(
@@ -104,7 +104,7 @@ class InvoiceService {
       );
     }
 
-    pw.Widget _tableCell(String text) {
+    pw.Widget tableCell(String text) {
       return pw.Container(
         padding: pw.EdgeInsets.all(4),
         height: 250, // Keeps row height fixed to utilize empty space
@@ -198,10 +198,9 @@ class InvoiceService {
                   ),
                 ),
 
-                // pw.Divider(thickness: 1, color: PdfColors.black),
-
                 // Buyer and Supply Info
                 pw.Container(
+                  // ignore: deprecated_member_use
                   child: pw.Table.fromTextArray(
                     border: pw.TableBorder.all(
                       width: 1,
@@ -213,12 +212,14 @@ class InvoiceService {
                         pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.start,
                           children: [
-                            pw.Text(customerName),
-                            pw.Text(customerAddress),
-                            pw.Text("PIN: $customerPin"),
+                            pw.Text("NAME : $customerName"),
+                            pw.Text("ADDRESS : $customerAddress"),
+                            pw.Text("PIN : $customerPin"),
                             if (customerGstin != null &&
                                 customerGstin.isNotEmpty)
-                              pw.Text("GSTIN: $customerGstin"),
+                              pw.Text(
+                                "GSTIN : $customerGstin($outwardSupplies)",
+                              ),
                           ],
                         ),
                         pw.Text(state),
@@ -263,7 +264,7 @@ class InvoiceService {
                           "IGST",
                           "TOTAL",
                         ])
-                          _tableHeaderCell(header),
+                          tableHeaderCell(header),
                       ],
                     ),
 
@@ -297,22 +298,22 @@ class InvoiceService {
                               .map((p) => "${p['taxRate'] ?? 0}%")
                               .join("\n\n"),
                           products
-                              .map((p) => (p['cgst'] ?? 0.0).toStringAsFixed(2))
+                              .map((p) => (p['cgstAmount'] ?? 0.0).toStringAsFixed(2))
                               .join("\n\n"),
                           products
-                              .map((p) => (p['sgst'] ?? 0.0).toStringAsFixed(2))
+                              .map((p) => (p['sgstAmount'] ?? 0.0).toStringAsFixed(2))
                               .join("\n\n"),
                           products
-                              .map((p) => (p['igst'] ?? 0.0).toStringAsFixed(2))
+                              .map((p) => (p['igstAmount'] ?? 0.0).toStringAsFixed(2))
                               .join("\n\n"),
                           products
                               .map(
                                 (p) =>
-                                    (p['taxAmount'] ?? 0.0).toStringAsFixed(2),
+                                    (p['totalAmount'] ?? 0.0).toStringAsFixed(2),
                               )
                               .join("\n\n"),
                         ])
-                          _tableCell(column), // Use the helper function
+                          tableCell(column), // Use the helper function
                       ],
                     ),
                   ],
@@ -334,13 +335,13 @@ class InvoiceService {
                           1: pw.FlexColumnWidth(3), // Value column width
                         },
                         children: [
-                          _row("AMOUNT", totalSubTotal),
-                          _row("CGST", totalCGST),
-                          _row("SGST", totalSGST),
-                          _row("IGST", totalIGST),
-                          _row(
+                          row("AMOUNT", allSubTotal),
+                          row("CGST", totalCGST),
+                          row("SGST", totalSGST),
+                          row("IGST", totalIGST),
+                          row(
                             "GRAND TOTAL",
-                            totalAmount,
+                            allTaxAmount,
                             isBold: true,
                           ), // Total row in bold
                         ],
@@ -380,9 +381,9 @@ class InvoiceService {
                             1: pw.FlexColumnWidth(3), // Value column width
                           },
                           children: [
-                            _rowb("Bank Account Holder", bankAccountHolder),
-                            _rowb("Account Number", bankAccountNumber),
-                            _rowb("IFSC", bankBranchIfsc),
+                            tableRow("Bank Account Holder", bankAccountHolder),
+                            tableRow("Account Number", bankAccountNumber),
+                            tableRow("IFSC", bankBranchIfsc),
                           ],
                         ),
                       ),

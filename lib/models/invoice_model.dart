@@ -24,11 +24,11 @@ class InvoiceModel {
   List<Product> products;
 
   // ✅ Totals (Calculated)
-  double totalSubTotal = 0;
+  double allSubTotal = 0;
   double totalCGST = 0;
   double totalSGST = 0;
   double totalIGST = 0;
-  double totalAmount = 0;
+  double allTaxAmount = 0;
 
   // ✅ Constant Bank Details
   static const String bankAccountHolder = companyName;
@@ -60,18 +60,18 @@ class InvoiceModel {
 
   // ✅ Method to calculate totals
   void _calculateTotals() {
-    totalSubTotal = 0;
+    allSubTotal = 0;
     totalCGST = 0;
     totalSGST = 0;
     totalIGST = 0;
-    totalAmount = 0;
+    allTaxAmount = 0;
 
     for (var product in products) {
-      totalSubTotal += product.subTotal;
+      allSubTotal += product.subTotal;
       totalCGST += product.cgstAmount;
       totalSGST += product.sgstAmount;
       totalIGST += product.igstAmount;
-      totalAmount += product.totalAmount;
+      allTaxAmount += product.totalAmount;
     }
   }
 
@@ -179,11 +179,11 @@ Map<String, dynamic> toJson() {
     "outwardSupplies": outwardSupplies,
     "customerGstin": customerGstin,
     "products": products.map((product) => product.toJson()).toList(),
-    "totalSubTotal": totalSubTotal,
+    "allSubTotal": allSubTotal,
     "totalCGST": totalCGST,
     "totalSGST": totalSGST,
     "totalIGST": totalIGST,
-    "totalAmount": totalAmount,
+    "allTaxAmount": allTaxAmount,
     "bankAccountHolder": bankAccountHolder,
     "bankAccountNumber": bankAccountNumber,
     "bankBranchIfsc": bankBranchIfsc,
