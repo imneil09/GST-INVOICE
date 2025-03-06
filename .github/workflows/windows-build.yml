@@ -1,0 +1,34 @@
+name: Build Windows App
+
+on:
+  push:
+    branches:
+      - main  # Change to your branch name
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      - name: Enable Windows Support
+        run: flutter config --enable-windows-desktop
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build Windows App
+        run: flutter build windows
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-build
+          path: build\windows\runner\Release\
