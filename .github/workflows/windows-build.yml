@@ -16,10 +16,13 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
+          flutter-version: '3.16.9'  # Replace with the latest stable version
 
       - name: Enable Windows Support
         run: flutter config --enable-windows-desktop
+
+      - name: Verify Flutter Installation
+        run: flutter doctor
 
       - name: Install Dependencies
         run: flutter pub get
