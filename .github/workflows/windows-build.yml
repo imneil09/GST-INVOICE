@@ -3,7 +3,7 @@ name: Build Windows App
 on:
   push:
     branches:
-      - main  # Change this if using another branch
+      - main  # Change if using another branch
 
 jobs:
   build:
@@ -13,11 +13,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter (Latest Version)
+      - name: Setup Flutter (3.29.0)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.0'  # Use at least Flutter 3.29.0 to get Dart 3.7.0+
-          cache: false  # Prevent using outdated versions
+          flutter-version: '3.29.0'  # Ensures Dart 3.7.0+
+          cache: false  # Avoid using cached older versions
 
       - name: Verify Flutter & Dart Version
         run: |
