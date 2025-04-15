@@ -37,7 +37,7 @@ class InvoiceModel {
 
   // ✅ Constant Declaration
   static const String declaration =
-      "WE HEREBY DECLARE THAT THIS INVOICE REFLECTS THE TRUE AND ACCURATE PRICE OF THE PRODUCT(S) LISTED, AND THAT ALL INFORMATION PROVIDED IS CORRECT AND VERIFIED.";
+      "We hereby declare that this invoice reflects the true and accurate price of the product(s) listed, and that all information provided is correct and verified.";
 
   // ✅ Seal & Signature
   static const String signatureText = "$companyName\n(Authorized Signatory)";
