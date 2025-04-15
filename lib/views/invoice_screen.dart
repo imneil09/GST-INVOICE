@@ -166,11 +166,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
               _buildGeneratePdfButton(),
               SizedBox(height: 23),
               Text(
-                '© 2025 M/S PARUL ENTERPRISE | DESIGN & DEVELOPED BY SAGAR BHOWMIK',
+                '© 2025 M/S PARUL ENTERPRISE | DESIGN & DEVELOPED BY SAGAR BHOWMIK | @ALPHABETS |',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(179, 73, 71, 71),
+                  color: const Color.fromARGB(179, 43, 42, 42),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -285,7 +285,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           labelText: 'GSTIN (Optional)',
                         ),
                       ),
-                      if (selectedSupplyType == 'B2C')
+                      if (selectedSupplyType == 'B2B')
                         Padding(
                           padding: const EdgeInsets.only(top: 4.0, left: 4.0),
                           child: Text(
@@ -467,7 +467,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                 DropdownButton<String>(
                   value: selectedUnit.value,
                   items:
-                      ['Cartons', 'Bags', 'KG', 'Liters', 'PCS']
+                      ['Cartons', 'Bags', 'KG', 'Liters', 'Bottles', 'PCS']
                           .map(
                             (unit) => DropdownMenuItem(
                               value: unit,
@@ -505,13 +505,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                 ),
               ],
             ),
-            CheckboxListTile(
-              title: Text("Interstate Transaction (IGST)"),
-              value: isInterState.value,
-              onChanged: (value) {
-                if (value != null) isInterState.value = value;
-              },
-            ),
+            // CheckboxListTile(
+            //   title: Text("Interstate Transaction (IGST)"),
+            //   value: isInterState.value,
+            //   onChanged: (value) {
+            //     if (value != null) isInterState.value = value;
+            //   },
+            // ),
           ],
         ),
       ),
@@ -589,7 +589,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     return Center(
       child: ElevatedButton(
         // ignore: avoid_print
-        onPressed: (){
+        onPressed: () {
           InvoiceModel invoiceData = controller.generateInvoice();
           controller.generatePdf(invoiceData);
         },

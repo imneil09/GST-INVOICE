@@ -74,11 +74,11 @@ class InvoiceController extends GetxController {
     totalSGST.value = products.fold(0.0, (sum, p) => sum + p.sgstAmount);
     totalIGST.value = products.fold(0.0, (sum, p) => sum + p.igstAmount);
     allTaxAmount.value =
-        allSubTotal.value +
-        totalCGST.value +
-        totalSGST.value +
-        totalIGST.value;
-
+        (allSubTotal.value +
+                totalCGST.value +
+                totalSGST.value +
+                totalIGST.value)
+            .roundToDouble();
     update(); // ✅ Notify UI
   }
 

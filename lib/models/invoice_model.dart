@@ -5,7 +5,7 @@ class InvoiceModel {
   static const String companyName = "M/S PARUL ENTERPRISE";
   static const String companyAddress =
       "Ward No-2, South Bejimara S.B. School, Sonamura, Sepahijala, Tripura";
-  static const String gstin = "16BTPJD7361PZ0";
+  static const String gstin = "16BTBPD0736P1ZO";
   static const String invoiceTitle = "TAX INVOICE";
 
   // ✅ Invoice Details
@@ -37,7 +37,7 @@ class InvoiceModel {
 
   // ✅ Constant Declaration
   static const String declaration =
-      "We declare that this invoice shows the actual price of the goods described in the bill and that all particulars are true and correct.";
+      "WE HEREBY DECLARE THAT THIS INVOICE REFLECTS THE TRUE AND ACCURATE PRICE OF THE PRODUCT(S) LISTED, AND THAT ALL INFORMATION PROVIDED IS CORRECT AND VERIFIED.";
 
   // ✅ Seal & Signature
   static const String signatureText = "$companyName\n(Authorized Signatory)";
@@ -124,7 +124,6 @@ class InvoiceModel {
     List<int> divisors = [1000, 100, 100];
 
     int rupees = amount.toInt();
-    int paise = ((amount - rupees) * 100).round();
     String words = "";
     int place = 0;
 
@@ -139,13 +138,9 @@ class InvoiceModel {
 
     if (words.trim().isEmpty) words = "Zero Rupees";
 
-    words = "${words.trim()} Rupees";
+    words = "${words.trim()} Rupees Only";
 
-    if (paise > 0) {
-      words += " and ${helper(paise, units, teens, tens)} Paise";
-    }
-
-    return "$words Only";
+    return words;
   }
 
   /// ✅ Helper function
@@ -164,33 +159,32 @@ class InvoiceModel {
   }
 
   // ✅ Convert InvoiceModel to JSON
-Map<String, dynamic> toJson() {
-  return {
-    "companyName": companyName,
-    "companyAddress": companyAddress,
-    "gstin": gstin,
-    "invoiceTitle": invoiceTitle,
-    "invoiceNumber": invoiceNumber,
-    "state": state,
-    "invoiceDate": invoiceDate,
-    "customerName": customerName,
-    "customerAddress": customerAddress,
-    "customerPin": customerPin,
-    "outwardSupplies": outwardSupplies,
-    "customerGstin": customerGstin,
-    "products": products.map((product) => product.toJson()).toList(),
-    "allSubTotal": allSubTotal,
-    "totalCGST": totalCGST,
-    "totalSGST": totalSGST,
-    "totalIGST": totalIGST,
-    "allTaxAmount": allTaxAmount,
-    "bankAccountHolder": bankAccountHolder,
-    "bankAccountNumber": bankAccountNumber,
-    "bankBranchIfsc": bankBranchIfsc,
-    "declaration": declaration,
-    "signatureText": signatureText,
-    "sealImagePath": sealImagePath,
-  };
-}
-
+  Map<String, dynamic> toJson() {
+    return {
+      "companyName": companyName,
+      "companyAddress": companyAddress,
+      "gstin": gstin,
+      "invoiceTitle": invoiceTitle,
+      "invoiceNumber": invoiceNumber,
+      "state": state,
+      "invoiceDate": invoiceDate,
+      "customerName": customerName,
+      "customerAddress": customerAddress,
+      "customerPin": customerPin,
+      "outwardSupplies": outwardSupplies,
+      "customerGstin": customerGstin,
+      "products": products.map((product) => product.toJson()).toList(),
+      "allSubTotal": allSubTotal,
+      "totalCGST": totalCGST,
+      "totalSGST": totalSGST,
+      "totalIGST": totalIGST,
+      "allTaxAmount": allTaxAmount,
+      "bankAccountHolder": bankAccountHolder,
+      "bankAccountNumber": bankAccountNumber,
+      "bankBranchIfsc": bankBranchIfsc,
+      "declaration": declaration,
+      "signatureText": signatureText,
+      "sealImagePath": sealImagePath,
+    };
+  }
 }

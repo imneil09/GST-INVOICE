@@ -1,10 +1,9 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
-
+import 'package:flutter/services.dart' show rootBundle;
 import '../models/invoice_model.dart';
 
 class InvoiceService {
@@ -35,14 +34,15 @@ class InvoiceService {
     final bankBranchIfsc = data['bankBranchIfsc'];
     final declaration = data['declaration'];
     final signatureText = data['signatureText'];
-    final sealImagePath = data['sealImagePath'];
+    // final sealImagePath = data['sealImagePath'];
+    final sealImageBytes = await rootBundle.load('assets/SEAL.jpeg');
 
     // Try loading the seal image if the file exists
-    pw.Widget? sealImageWidget;
-    if (sealImagePath != null && File(sealImagePath).existsSync()) {
-      final Uint8List sealBytes = File(sealImagePath).readAsBytesSync();
-      sealImageWidget = pw.Image(pw.MemoryImage(sealBytes), width: 100);
-    }
+    // pw.Widget? sealImageWidget;
+    // if (sealImagePath != null && File(sealImagePath).existsSync()) {
+    //   final Uint8List sealBytes = File(sealImagePath).readAsBytesSync();
+    //   sealImageWidget = pw.Image(pw.MemoryImage(sealBytes), width: 100);
+    // }
 
     /// ✅ Convert Amount to Words
     String getAmountInWords() {
@@ -298,18 +298,27 @@ class InvoiceService {
                               .map((p) => "${p['taxRate'] ?? 0}%")
                               .join("\n\n"),
                           products
-                              .map((p) => (p['cgstAmount'] ?? 0.0).toStringAsFixed(2))
-                              .join("\n\n"),
-                          products
-                              .map((p) => (p['sgstAmount'] ?? 0.0).toStringAsFixed(2))
-                              .join("\n\n"),
-                          products
-                              .map((p) => (p['igstAmount'] ?? 0.0).toStringAsFixed(2))
+                              .map(
+                                (p) =>
+                                    (p['cgstAmount'] ?? 0.0).toStringAsFixed(2),
+                              )
                               .join("\n\n"),
                           products
                               .map(
                                 (p) =>
-                                    (p['totalAmount'] ?? 0.0).toStringAsFixed(2),
+                                    (p['sgstAmount'] ?? 0.0).toStringAsFixed(2),
+                              )
+                              .join("\n\n"),
+                          products
+                              .map(
+                                (p) =>
+                                    (p['igstAmount'] ?? 0.0).toStringAsFixed(2),
+                              )
+                              .join("\n\n"),
+                          products
+                              .map(
+                                (p) => (p['totalAmount'] ?? 0.0)
+                                    .toStringAsFixed(2),
                               )
                               .join("\n\n"),
                         ])
@@ -340,10 +349,14 @@ class InvoiceService {
                           row("SGST", totalSGST),
                           row("IGST", totalIGST),
                           row(
-                            "GRAND TOTAL",
-                            allTaxAmount,
+                            "TOTAL",
+                            (allTaxAmount is double)
+                                ? allTaxAmount.roundToDouble()
+                                : double.tryParse(allTaxAmount.toString()) ??
+                                    0.0,
                             isBold: true,
-                          ), // Total row in bold
+                          ),
+                          // Total row in bold
                         ],
                       ),
                     ),
@@ -457,13 +470,17 @@ class InvoiceService {
                             .CrossAxisAlignment
                             .center, // Aligns content to the right
                     children: [
-                      if (sealImageWidget != null)
-                        pw.Container(
-                          margin: pw.EdgeInsets.only(
-                            bottom: 8,
-                          ), // Adds spacing below the seal
-                          child: sealImageWidget, // Seal Image
-                        ),
+                      // if (sealImageWidget != null)
+                      //   pw.Container(
+                      //     margin: pw.EdgeInsets.only(
+                      //       bottom: 8,
+                      //     ), // Adds spacing below the seal
+                      //     child: sealImageWidget, // Seal Image
+                      //   ),
+                      pw.Image(
+                        pw.MemoryImage(sealImageBytes.buffer.asUint8List()),
+                        width: 100,
+                      ),
 
                       pw.Container(
                         padding: pw.EdgeInsets.all(8),
