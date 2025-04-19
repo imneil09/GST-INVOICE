@@ -2,10 +2,10 @@ import 'product_model.dart';
 
 class InvoiceModel {
   // ✅ Constant Company Details (Header)
-  static const String companyName = "M/S PARUL ENTERPRISE";
+  static const String companyName = "ALPHABETS";
   static const String companyAddress =
-      "Ward No-2, South Bejimara S.B. School, Sonamura, Sepahijala, Tripura";
-  static const String gstin = "16BTBPD0736P1ZO";
+      "Ward No-2, Near South Bejimara S.B. School,\nSonamura, Sepahijala, Tripura,\n Zip : 799131";
+  static const String gstin = "16**********1ZO";
   static const String invoiceTitle = "TAX INVOICE";
 
   // ✅ Invoice Details
@@ -32,7 +32,7 @@ class InvoiceModel {
 
   // ✅ Constant Bank Details
   static const String bankAccountHolder = companyName;
-  static const String bankAccountNumber = "3917322662";
+  static const String bankAccountNumber = "**********";
   static const String bankBranchIfsc = "Sonamura & SBIN0006626";
 
   // ✅ Constant Declaration
